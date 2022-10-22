@@ -1,0 +1,418 @@
+.gradient-custom {
+    background-image: url('https://burst.shopifycdn.com/photos/view-of-a-camper-from-inside-tent.jpg?width=1850&format=pjpg&exif=1&iptc=1');   
+}
+
+.card-background {
+    background: #241F1F;
+}
+
+.text-body{
+    color: #6c757d !important;
+}
+
+/* .otp-outline {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #282a36;
+    height: 100vh;
+    color: #fff;
+  } */
+  
+  .otp-field {
+    display: flex;
+  }
+  
+  .otp-field input {
+    width: 40px;
+    font-size: 18px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    margin: 3px;
+    border: 2px solid #55525c;
+    background: #241F1F;
+    font-weight: bold;
+    color: #fff;
+    outline: none;
+    transition: all 0.1s;
+  }
+  
+  .otp-field input:focus {
+    border: 2px solid #fff;
+    box-shadow: 0 0 2px 2px #241F1F;
+  }
+  
+  .disabled {
+    opacity: 0.5;
+  }
+  
+  .space {
+    margin-right: 1rem !important;
+  }
+
+  .nav-link {
+    color: #fff;
+    margin-right: 90px;
+  }
+
+  .nav-link:hover {
+    color : yellow;
+  }
+  
+  .nav-link:focus {
+    color : yellow;
+  }
+  .nav-link:active {
+    color : red;
+  }
+
+  .nav-icon-link {
+    color: #fff;
+    margin-right: 40px;
+    margin-top: 20px;
+  }
+
+  .nav-icon-link :hover {
+    color : yellow;
+  }
+
+  .nav-icon-link :focus {
+    color : yellow;
+  }
+
+  .logo {
+    width: 23%;
+  }
+ 
+  .logo-user {
+    width: 20%;
+  }
+
+  
+
+
+.form{
+
+    position: relative;
+}
+
+.form .fa-search{
+
+    position: absolute;
+    top:12px;
+    left: 20px;
+    color: #9ca3af;
+
+}
+
+.form span{
+
+        position: absolute;
+    right: 17px;
+    top: 13px;
+    padding: 2px;
+    border-left: 1px solid #d1d5db;
+
+}
+
+.left-pan{
+    padding-left: 7px;
+}
+
+.left-pan i{
+   
+   padding-left: 10px;
+}
+
+.form-input{
+
+    height: 40px;
+    text-indent: 33px;
+    border-radius: 30px;
+}
+
+.form-input:focus{
+
+    box-shadow: none;
+    border:none;
+}
+
+
+
+
+
+
+
+.product-view-card{
+  border:none
+}
+.product{
+  background-color: #eee
+}
+.brand{
+  font-size: 13px
+}
+.act-price{
+  color: #000;font-weight: 700
+}
+.dis-price{
+  text-decoration: line-through
+}
+.about{
+  font-size: 14px
+}
+.color{
+  margin-bottom:10px
+}
+label.radio{
+  cursor: pointer
+}
+label.radio input{
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none
+}
+label.radio span{
+  padding: 2px 9px;
+  border: 1px solid #000;
+  display: inline-block;
+  color: #000 ;
+  border-radius: 3px;
+  text-transform: uppercase
+}
+label.radio input:checked+span{
+  border : 2px solid #000;
+  color: #000;
+  font-weight: 600;
+}
+/* .btn-danger{
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important
+}
+.btn-danger:hover{
+  background-color: #da0606 !important;
+  border-color: #da0606 !important
+} */
+.btn-danger:focus{
+  box-shadow: none
+}
+.cart i{
+  margin-right: 10px
+}
+
+
+
+  
+.shop{
+  font-size: 16px;
+}
+
+.space{
+  letter-spacing: 0.8px !important;
+}
+
+.second a:hover {
+  color: rgb(92, 92, 92) ;
+}
+
+.active-2 {
+  color: rgb(92, 92, 92) 
+}
+
+
+.breadcrumb>li+li:before {
+  content: "" !important
+}
+
+.breadcrumb {
+  padding: 0px;
+  font-size: 10px;
+  color: #aaa !important;
+}
+
+.first {
+  background-color: white ;
+}
+
+
+
+
+
+/* .card-2{
+  margin-top: 40px !important;
+} */
+
+.card-header{
+  background-color: #fff;
+  border-bottom:0px solid #aaaa !important;
+}
+
+p{
+  font-size: 16px ;
+  font-weight: 600;
+}
+
+.display-address {
+  line-height: normal;
+  margin-bottom: 0%;
+}
+      
+.small{
+  font-size: 16px !important;
+}
+
+.form-control-sm {
+  height: calc(2.2em + .5rem + 2px);
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: 0;   
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.boxed {
+  padding: 0px 8px 0 8px ;
+  background-color: #4bb8a9;
+  color: white;
+}
+
+.boxed-1{
+  padding: 0px 8px 0 8px ;
+  color: black !important;
+  border: 1px solid #aaaa;
+}
+
+.bell{
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .breadcrumb-item+.breadcrumb-item {
+      padding-left: 0
+  }
+}
+
+
+
+.wishlist-inactive {
+  color: #d1d5db;
+}
+
+.wishlist-active {
+  color: tomato;
+}
+
+.wishlist-active:hover {
+  color: red;
+}
+
+.wishlist-active:active {
+  font-size: 2em;
+}
+
+.wishlist-inactive:hover {
+  color: red;
+}
+
+.wishlist-inactive:active {
+  font-size: 2em;
+}
+
+
+
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+/* body{
+  background-color: #eee;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300
+} */
+.cart{
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  height: 80vh
+}
+
+.check1{
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  display: flex;
+  background-color: #000;
+  color: #fff;
+  font-size: 30px;
+  padding-left: 7px;
+  width: 60px;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 10px
+}
+.invoice-link{
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-size: 15px
+}
+.order-button{
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  height: 50px
+}
+.background-muted{
+  background-color:#fafafc
+}
+
+
+
+
+
+
+/* zoom */
+.zoom-image-container {
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+
+.zoom-image {
+  
+  position: relative;
+  
+}
+
+.zoom-image img {
+  
+  cursor: zoom-in;
+  
+  
+  /* box-shadow: 0 18px 5px -15px rgba( 0, 0, 0, .5 ); */
+  
+}
+
+.hover-image {
+  
+  position: fixed;
+  width:300px;
+  height: 300px;
+  
+  border-radius: 10%;
+  
+  transform: translate( -0%, -20% );
+  
+  pointer-events: none;
+  
+  box-shadow: 0 0 10px rgba( 0, 0, 0, .1 );
+  
+}
