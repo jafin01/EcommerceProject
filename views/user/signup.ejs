@@ -1,0 +1,65 @@
+<%- include('../layouts/head.ejs') %> 
+
+<section class="vh-100"
+  style="background-image: url('https://burst.shopifycdn.com/photos/view-of-a-camper-from-inside-tent.jpg?width=1850&format=pjpg&exif=1&iptc=1');">
+  <div class="mask d-flex align-items-center h-100">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card card-background" style="border-radius: 15px; color: #fff;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-3">Create an account</h2>
+
+              <% if(response.passMatchErr) { %>
+                <p style="color: red"><%= response.passMatchErrMssg %> </p>
+              <% } %>  
+
+              <% if(response.userExistsErr) { %>
+                <p style="color: red"><%= response.userExistsErrMssg %> </p>
+              <% } %> 
+
+              <form action="/user_registration" method="post">
+
+                <label class="form-label" for="form3Example1cg">Your Name</label>
+                <div class="form-outline mb-4">
+                  <input type="text" name="name" id="form3Example1cg" class="form-control form-control-lg" required />
+                </div>
+
+                <label class="form-label" for="form3Example3cg">Your Email</label>
+                <div class="form-outline mb-4">
+                  <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg" required />
+                </div>
+
+                <label class="form-label" for="form3Example3cg">Your Mobile Number</label>
+                <div class="form-outline mb-4">
+                  <input type="tel" name="mobile" id="form3Example3cg" class="form-control form-control-lg" required />
+                </div>
+
+                <label class="form-label" for="form3Example4cg">Password</label>
+                <div class="form-outline mb-4">
+                  <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg" required />
+                </div>
+
+                <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+                <div class="form-outline mb-4">
+                  <input type="password" name="confirmPassword" id="form3Example4cdg" class="form-control form-control-lg" required />
+                </div>
+
+                <div style="text-align: center">
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
+                </div>
+
+                <p class="text-center text-muted mt-3 mb-0">Have already an account? <a href="/user_signin"
+                    class="fw-bold text-body"><u>Login here</u></a></p>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../layouts/foot.ejs') %> 

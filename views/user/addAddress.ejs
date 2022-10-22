@@ -1,0 +1,143 @@
+<%- include('../layouts/head.ejs') %>
+
+<%- include('../partials/user-navbar-loggedIn.ejs') %>
+
+<div class=" container-fluid my-5 ">
+  <div class="row justify-content-center ">
+    <div class="col-xl-10">
+      <div class="card shadow-lg ">
+        <div class="row p-2 mt-3 justify-content-between mx-sm-2">
+        </div>
+        <div class="row justify-content-around">
+          <div class="col-md-5">
+            <div class="card border-0">
+              <div class="card-header pb-0">
+                <h2 class="card-title space ">Add new Address</h2>
+                <p class="card-text text-muted mt-4  space">SHIPPING DETAILS</p>
+                <hr class="my-0">
+                <div class="">
+                  <p class="card-text text-muted mt-4 mb-0  space">ADD DELIVERY ADDRESS</p>
+                </div>
+                <div>
+                  <form class="row g-3 mt-0" action="/cart/checkout/shipping/add-new-address" method="post">
+                    <div class="col-md-6">
+                      <label for="" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputEmail4" class="form-label">Mobile number</label>
+                      <input type="tel" name="mobile" max="10" class="form-control" id="" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="inputAddress" class="form-label">Address</label>
+                      <input type="text" class="form-control" name="address1" id="inputAddress"
+                        placeholder="1234 Main St" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="inputAddress2" class="form-label">Address 2</label>
+                      <input type="text" class="form-control" name="address2" id="inputAddress2"
+                        placeholder="Apartment, studio, or floor" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputCity" class="form-label">City</label>
+                      <input type="text" class="form-control" name="city" id="inputCity" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="inputState" class="form-label">State</label>
+                      <select id="inputState" name="state" class="form-select" required>
+                        <option selected>Kerala</option>
+                        <option>Kerala</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inputZip" class="form-label">Zip</label>
+                      <input type="text" name="zip" class="form-control" id="inputZip" required>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" name="save" type="checkbox" id="gridCheck" checked>
+                        <label class="form-check-label" for="gridCheck">
+                          Save address
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 mt-4">
+            <div class="card border-0 ">
+              <div class="card-header card-2">
+                <p class="card-text text-muted mt-md-4 space">ORDER SUMMARY </p>
+                <hr class="my-2">
+              </div>
+              <div class="card-body pt-0">
+
+                <% for(let i=0; i<cart.items.length; i++) { %>
+                <div class="row  justify-content-between">
+                  <div class="col-auto col-md-7">
+                    <div class="media flex-column flex-sm-row">
+                      <img class=" img-fluid mb-2" src="/images/<%= cart.items[i].image1 %> " width="62" height="62">
+                      <div class="media-body  my-auto">
+                        <div class="row ">
+                          <div class="col-auto">
+                            <h6 class="mb-0"><b><%= cart.items[i].productName %> </b></h6><small
+                              class="text-muted"><%= cart.items[i].category %> </small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class=" pl-0 flex-sm-col col-auto  my-auto">
+                    <h6 class=""><%= cart.items[i].quantity %> </h6>
+                  </div>
+                  <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                    <h6><b>₹ <%= cart.items[i].price %> </b></h6>
+                  </div>
+                </div>
+                <hr class="my-2">
+                <% } %>
+
+                <div class="row mt-5">
+                  <div class="col">
+                    <div class="row justify-content-between">
+                      <div class="col-4">
+                        <h6 class="mb-3"><b>Subtotal</b></h6>
+                      </div>
+                      <div class="flex-sm-col col-auto">
+                        <h6 class="mb-3"><b>₹ <%= cart.bill %> </b></h6>
+                      </div>
+                    </div>
+                    <div class="row justify-content-between">
+                      <div class="col">
+                        <h6 class="mb-3"><b>Shipping</b></h6>
+                      </div>
+                      <div class="flex-sm-col col-auto">
+                        <h6 class="mb-3" style="color: green"><b>Free</b></h6>
+                      </div>
+                    </div>
+                    <div class="row justify-content-between">
+                      <div class="col-4">
+                        <h6><b>Total</b></h6>
+                      </div>
+                      <div class="flex-sm-col col-auto">
+                        <h6 class="mb-3"><b>537 SEK</b></h6>
+                      </div>
+                    </div>
+                    <hr class="my-0">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/foot.ejs') %>

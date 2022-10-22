@@ -1,0 +1,133 @@
+<%- include('../layouts/head.ejs') %>
+
+<%- include('../partials/user-navbar-loggedIn.ejs') %>
+
+<div class=" container-fluid my-5 ">
+    <div class="row justify-content-center ">
+        <div class="col-xl-10">
+            <div class="card shadow-lg ">
+                <div class="row p-2 mt-3 justify-content-between mx-sm-2">
+                </div>
+                <div class="row justify-content-around">
+                    <div class="col-md-5">
+                        <div class="card border-0">
+                            <div class="card-header pb-0">
+                                <h2 class="card-title space ">Checkout</h2>
+                                <p class="card-text text-muted mt-4  space">SHIPPING DETAILS</p>
+                                <hr class="my-0">
+                                <div class="">
+                                    <p class="card-text text-muted mt-4 mb-2  space">SELECT DELIVERY ADDRESS</p>
+                                </div>
+                                <form action="/payment" method="post" class="">
+
+                                    <% for(let i=0; i<userAddress.length; i++) { %>
+                                    <div class="form-check mt-3">
+                                        <input type="radio" class="form-check-input js-radioInput" id="radio1"
+                                            name="selectedAddressIndex" onclick="" value="<%= i %> ">
+                                        <p class="display-address"><%= userAddress[i].name %>,</p>
+                                        <p class="display-address"><%= userAddress[i].address2 %>,</p>
+                                        <p class="display-address"><%= userAddress[i].mobile %>,</p>
+                                        <p class="display-address"><%= userAddress[i].address1 %>,</p>
+                                        <p class="display-address"><%= userAddress[i].city %>,</p>
+                                        <p class="display-address"><%= userAddress[i].state %>,</p>
+                                        <p class="display-address"><%= userAddress[i].zip %></p>
+                                        <label class="form-check-label" for="radio1"></label>
+                                    </div>
+                                    <% } %>
+
+                                    <a href="/cart/checkout/shipping/add-new-address"
+                                        style="text-decoration: none; color: green;">
+                                        <p>Add a new address</p>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mt-4">
+                        <div class="card border-0 ">
+                            <div class="card-header card-2">
+                                <p class="card-text text-muted mt-md-4 space">ORDER SUMMARY </p>
+                                <hr class="my-2">
+                            </div>
+                            <div class="card-body pt-0">
+
+                                <% for(let i=0; i<cart.items.length; i++) { %>
+                                <div class="row  justify-content-between">
+                                    <div class="col-auto col-md-7">
+                                        <div class="media flex-column flex-sm-row">
+                                            <img class=" img-fluid mb-2" src="/images/<%= cart.items[i].image1 %> "
+                                                width="62" height="62">
+                                            <div class="media-body  my-auto">
+                                                <div class="row ">
+                                                    <div class="col-auto">
+                                                        <h6 class="mb-0"><b><%= cart.items[i].productName %> </b></h6>
+                                                        <small class="text-muted"><%= cart.items[i].category %> </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" pl-0 flex-sm-col col-auto  my-auto">
+                                        <h6 class=""><%= cart.items[i].quantity %> </h6>
+                                    </div>
+                                    <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                        <h6><b>₹ <%= cart.items[i].price %> </b></h6>
+                                    </div>
+                                </div>
+                                <hr class="my-2">
+                                <% } %>
+
+                                <div class="row mt-5">
+                                    <div class="col">
+                                        <div class="row justify-content-between">
+                                            <div class="col-4">
+                                                <h6 class="mb-3"><b>Subtotal</b></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 class="mb-3"><b>₹ <%= cart.bill %> </b></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col">
+                                                <h6 class="mb-3"><b>Shipping</b></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 class="mb-3" style="color: green"><b>Free</b></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-4">
+                                                <h6><b>Total</b></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 class="mb-3"><b>₹ <%= cart.bill %> </b></h6>
+                                            </div>
+                                        </div>
+                                        <hr class="my-0">
+                                    </div>
+                                </div>
+                                <div class="row mb-5 mt-4 ">
+                                    <div class="col-md-7 col-lg-6 mx-auto"><button id="my_button" type="submit"
+                                            disabled="disabled" value="submit" name="submit"
+                                            class="btn btn-dark btn-block btn-lg">Proceed to Payment</button></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var inputElems = document.getElementsByClassName("js-radioInput");
+    for (var i = inputElems.length - 1; i >= 0; --i) {
+        var elem = inputElems[i];
+        elem.onchange = function () {
+            document.getElementById("my_button").removeAttribute("disabled");
+        };
+    }
+</script>
+
+<%- include('../layouts/foot.ejs') %>

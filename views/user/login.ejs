@@ -1,0 +1,69 @@
+<%- include('../layouts/head.ejs') %>
+
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card card-background text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5">
+
+            <div class="md-5 mt-md-4">
+
+              <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+              <p class="text-white-50 mb-5">Please enter your login and password!</p>
+
+              <% if(response.passErr) { %>
+              <p style="color: red"><%= response.passErrMssg %> </p>
+              <% } %>
+
+              <% if(response.registerErr) { %>
+              <p style="color: red"><%= response.registerErrMssg %> </p>
+              <% } %>
+
+              <% if(response.blockErr) { %>
+              <p style="color: red"><%= response.blockErrMssg %> </p>
+              <% } %>
+
+
+              <form action="/user_signin" method="post">
+
+                <label class="form-label" for="typeEmailX">Email</label>
+                <div class="form-outline form-white mb-4">
+                  <input type="email" name="email" id="typeEmailX" class="form-control form-control-lg" required />
+                </div>
+
+                <label class="form-label" for="typePasswordX">Password</label>
+                <div class="form-outline form-white mb-4" style="text-align: right;">
+                  <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg"
+                    required />
+
+                  <span class="small mb-4 pb-lg-2"><a class="text-white-50" href="#!"
+                      style="text-decoration: none;">Forgot password?</a></span>
+                </div>
+
+
+                <div style="text-align: center">
+                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                </div>
+            </div>
+            </form>
+
+            <div style="text-align: center">
+              <p class="mb-0 mt-4">New to Camper? <a href="/user_registration" class="text-white-50 fw-bold"
+                  style="text-decoration: none;">Create an account</a>
+              </p>
+            </div>
+
+            <div style="text-align: center">
+              <p class="mb-0 mt-4"><a href="/mobile_verification" class="text-white-50"
+                  style=" color: #fff !important; font-weight: 700;">Login with OTP</a></p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../layouts/foot.ejs') %>

@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background: #241F1F;">
+    <div class="container-fluid">
+        <div class="logo-user">
+            <a class="navbar-brand text-white mx-4" href="/user_home">
+              <video autoplay muted>
+              <source src="/images/Untitled design.mp4" type="video/mp4">
+            </video>
+          </a>
+        </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+        <div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                  <a class="nav-link" href="/user_home">HOME</a>
+              </li>
+            <% categories.forEach((category) => { %>
+              <li class="nav-item">
+                  <a class="nav-link" href="/user_home?category=<%= category.category.toLowerCase() %>"><%= category.category %> </a>
+              </li>
+            <% }) %> 
+            
+            </ul>   
+        </div>
+
+        <div class="navbar-nav  mb-lg-0" style=" width: 100%; display: flex; justify-content: end;">
+
+            <div class="container">
+
+            <div class="row height d-flex">
+
+              <div class="col-md-6">
+
+                <div class="form" style="min-width: 5vw;">
+                  <i class="fa fa-search"></i>
+                  <input type="text" class="form-control form-input" placeholder="Search...">
+                </div>
+                
+              </div>
+              
+            </div>
+            
+          </div> 
+            <% if(wishlist.length === 0 ) { %>
+              <a class="nav-icon-link my-auto" href="/wishlist"><i class="fa-regular fa-heart"></i></a>
+            <% }else{ %>
+              <a class="nav-icon-link my-auto position-relative" href="/wishlist"><i class="fa-regular fa-heart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= wishlist.length %>  </span></a>
+            <% } %> 
+
+            <% if(cart.items.length === 0) { %>
+            <a class="nav-icon-link my-auto" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+            <% }else{ %>  
+              <a class="nav-icon-link my-auto position-relative" href="/cart"><i class="fa-solid fa-cart-shopping"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= cart.items.length %>  </span></a>
+            <% } %> 
+            <a class="nav-icon-link my-auto" href="/myAccount"><i class="fa-solid fa-user-large"></i></a> 
+            <a class="nav-icon-link my-auto" style="cursor: pointer"><i class="fa-solid fa-right-from-bracket" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>
+          </div>
+
+    </div>
+    
+  </div>
+  
+</nav>
+    
+        
+        
+        
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                Are you sure you want to Logout?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="/user_logout"><button type="button" class="btn btn-danger">Logout</button></a>
+                </div>
+            </div>
+            </div>
+        </div>
+      

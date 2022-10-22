@@ -1,0 +1,107 @@
+<%- include('../layouts/head.ejs') %> 
+
+<%- include('../partials/admin-navbar.ejs') %> 
+
+<section>
+    <div class="table-responsive container">
+        <div class="container">
+          <div class="input-group mt-5">
+            <a href="/admin_panel/product_management/add_product">
+            <button class="btn btn-primary">Add Product</button>
+            </a>
+            <div style="position: absolute; right: 0px; width: 300px;">
+              <input style="align-items: flex-end" type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search..."/>
+            </div>
+          </div>
+            
+          <div class="table-responsive">
+            <table id="myTable" class="table table-hover mt-5">
+                <thead>
+                  <tr>
+                    <th scope="col">Slno</th>
+                    <th scope="col">ProductName</th>
+                    <th scope="col">Actual Price</th>
+                    <th scope="col">discounted Price</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Sub-category</th>
+                    <th scope="col">image-1</th>
+                    <th scope="col">image-2</th>
+                    <th scope="col">Action</th>
+                  </tr>
+            
+                </thead>
+          
+                
+                <% for(let i =0; i< result.length; i++) {%> 
+                <tbody>
+                <tr>
+                      <th scope="row"> <%=num++  %> </th>
+                      <td><%= result[i].productName%> </td>
+                      <td><%= result[i].actualPrice%> </td>
+                      <td><%= result[i].discountedPrice%> </td>
+                      <td><%= result[i].description%> </td>
+                      <td><%= result[i].stock%> </td>
+                      <td><%= result[i].category%> </td>
+                      <td><%= result[i].subCategory%> </td>
+                      <td><%= result[i].image1%> </td>
+                      <td><%= result[i].image2%> </td>
+                      <td style="text-align: center">
+                        <form action="/admin_panel/edit-product?id=<%= result[i]._id  %>" method="post">
+                          <button type="submit" style="background: none;
+                          color: inherit;
+                          border: none;
+                          padding: 0;
+                          font: inherit;
+                          cursor: pointer;
+                          outline: inherit;">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </form>
+                        <form action="/admin_panel/delete-product?id=<%= result[i]._id  %>" method="post">
+                          <button type="submit" style="background: none;
+                          color: inherit;
+                          border: none;
+                          padding: 0;
+                          font: inherit;
+                          cursor: pointer;
+                          outline: inherit;">
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                </tbody>
+                <% } %> 
+            </table>
+          </table>
+        </div>
+    
+      </div>
+    </table>
+  </div>
+</section>
+
+
+  <script>
+    function myFunction() {
+      let input = document.getElementById("myInput");
+      let filter = input.value.toUpperCase();
+      let table = document.getElementById("myTable");
+      let tr = table.getElementsByTagName("tr");
+      for (let i = 0; i < tr.length; i++) {
+          let td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          let txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+    </script>
+
+<%- include('../layouts/foot.ejs') %> 

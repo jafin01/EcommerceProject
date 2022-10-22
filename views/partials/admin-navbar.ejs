@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background: #241F1F;">
+    <div class="container-fluid">
+      <div class="logo-user">
+        <a class="navbar-brand text-white mx-4" href="/user_home">
+          <video autoplay muted>
+          <source src="/images/Untitled design.mp4" type="video/mp4">
+        </video>
+      </a>
+    </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" href="/admin_panel/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" href="/admin_panel/product_management">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" href="/admin-panel/category-management">Category</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" href="/admin-panel/coupon-management">Coupon</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" href="/admin_panel/order_management">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" href="/admin_panel/user_management">Users</a>
+          </li>
+        </ul>
+        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Logout
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                Are you sure you want to Logout?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="/admin_logout"><button type="button" class="btn btn-danger">Logout</button></a>
+                </div>
+            </div>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,110 @@
+<%- include('../layouts/head.ejs') %> 
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card card-background text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5">
+  
+              <div class="md-5 mt-md-4">
+  
+                <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                <p class="text-white-50 mb-5">Please enter your Mobile number and OTP!</p>
+  
+                <% if(response.otpErr) { %>
+                    <p style="color: red"><%= response.otpErrMssg %> </p>
+                <% } %>  
+
+                <form action="/user/verify-otp" method="post">
+
+                <!-- <label class="form-label" for="typeEmailX">Mobile Number</label>
+                <div class="form-outline form-white mb-4">
+                  <input type="tel" name="mobile" id="typeEmailX" class="form-control form-control-lg" required/>
+                </div> -->
+  
+                <label class="form-label" for="typePasswordX">OTP</label>
+                <div class="otp-field mb-4">
+                    <input type="text" name="otp" maxlength="1"  required/>
+                    <input type="text" name="otp" maxlength="1" required/>
+                    <input class="space" name="otp" type="text" maxlength="1" required/>
+                    <input type="text" name="otp" maxlength="1" required/>
+                    <input type="text" name="otp" maxlength="1" required/>
+                    <input type="text" name="otp" maxlength="1" required/>
+                  </div>
+  
+                <div style="text-align: center">
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Verify</button>
+                </div>
+              </div>
+              </form>
+  
+              <div style="text-align: center">
+                <p class="mb-0 mt-4"><a href="/user_signin" class="text-white-50" style=" color: #fff !important; font-weight: 700;">Login with Email</a></p>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+    const inputs = document.querySelectorAll(".otp-field input");
+
+    inputs.forEach((input, index) => {
+    input.dataset.index = index;
+    input.addEventListener("keyup", handleOtp);
+    input.addEventListener("paste", handleOnPasteOtp);
+    });
+
+    function handleOtp(e) {
+    /**
+     * <input type="text" 👉 maxlength="1" />
+     * 👉 NOTE: On mobile devices `maxlength` property isn't supported,
+     * So we to write our own logic to make it work. 🙂
+     */
+    const input = e.target;
+    let value = input.value;
+    let isValidInput = value.match(/[0-9]/gi);
+    input.value = "";
+    input.value = isValidInput ? value[0] : "";
+
+    let fieldIndex = input.dataset.index;
+    if (fieldIndex < inputs.length - 1 && isValidInput) {
+        input.nextElementSibling.focus();
+    }
+
+    if (e.key === "Backspace" && fieldIndex > 0) {
+        input.previousElementSibling.focus();
+    }
+
+    // if (fieldIndex == inputs.length - 1 && isValidInput) {
+    //     submit();
+    // }
+    }
+
+    function handleOnPasteOtp(e) {
+    const data = e.clipboardData.getData("text");
+    const value = data.split("");
+        if (value.length === inputs.length) {
+            inputs.forEach((input, index) => (input.value = value[index]));
+            submit();   
+        }
+    }
+
+    // function submit() {
+    // console.log("Submitting...");
+    // // 👇 Entered OTP
+    // let otp = "";
+    // inputs.forEach((input) => {
+    //     otp += input.value;
+    //     input.disabled = true;
+    //     input.classList.add("disabled");
+    // });
+    // console.log(otp);
+    // // 👉 Call API below
+    // }
+</script>
+<%- include('../layouts/foot.ejs') %> 

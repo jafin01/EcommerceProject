@@ -1,0 +1,50 @@
+<%- include('../layouts/head.ejs') %> 
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card card-background text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5">
+  
+              <div class="md-5 mt-md-4">
+  
+                <h2 class="fw-bold mb-4 text-uppercase">ADMIN ONLY</h2>
+                <!-- <p class="text-white-50 mb-4">Please enter your username and password!</p> -->
+  
+                <% if(response.passErr) { %> 
+                  <p style="color: red"><%= response.passErrMssg %> </p>
+                <% } %> 
+
+                <% if(response.registerErr) { %> 
+                  <p style="color: red"><%= response.registerErrMssg %> </p>
+                <% } %>
+
+                <form action="/admin_login" method="post">
+
+                <label class="form-label" for="typeEmailX">Username</label>
+                <div class="form-outline form-white mb-4">
+                  <input type="text" name="username" id="typeEmailX" class="form-control form-control-lg" required/>
+                </div>
+  
+                <label class="form-label" for="typePasswordX">Password</label>
+                <div class="form-outline form-white mb-4" style="text-align: right;">
+                  <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg" required/>
+                  
+                  <!-- <span class="small mb-4 pb-lg-2"><a  class="text-white-50" href="#!" style="text-decoration: none;">Forgot password?</a></span> -->
+                </div>
+  
+                
+                <div style="text-align: center">
+                    <button class="btn btn-outline-light btn-lg px-5 mb-2 mt-3" type="submit">Login</button>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<%- include('../layouts/foot.ejs') %> 

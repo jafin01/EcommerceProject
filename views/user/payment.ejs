@@ -1,0 +1,317 @@
+<%- include('../layouts/head.ejs') %>
+
+<%- include('../partials/user-navbar-loggedIn.ejs') %>
+
+<div class=" container-fluid my-5 ">
+    <div class="row justify-content-center ">
+        <div class="col-xl-10">
+            <div class="card shadow-lg ">
+                <div class="row p-2 mt-3 justify-content-between mx-sm-2">
+                </div>
+
+
+
+                <div class="row justify-content-around">
+                    <div class="col-md-5">
+                        <div class="card border-0">
+                            <div class="card-header pb-0">
+                                <h2 class="card-title space">Payment Option</h2>
+                                <hr class="my-0 mt-4">
+
+                                <div class="">
+                                    <p class="card-text text-muted mt-5 mb-2  space">HAVE A COUPON CODE?</p>
+                                </div>
+                                <h5 class="text-uppercase mb-2  mt-4">Give code</h5>
+
+
+                                <div class="mb-5">
+                                    <div class="form-outline">
+                                        <span style="color: red;" class="mb-1 mt-5"><b id="validation"></b></span>
+                                        <form id="applyCoupon">
+                                            <div style="display : flex; gap: 2px;">
+                                                <input style="border: 1px solid black" name="coupon" type="text"
+                                                    id="form3Examplea2" class="form-control form-control-lg" required />
+                                                <button type="submit" class="btn btn-dark">Apply</button>
+                                            </div>
+                                            <label class="form-label mb-0" for="form3Examplea2">Enter your code</label>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    <p class="card-text text-muted mt-4 mb-2  space">SELECT PAYMENT OPTION</p>
+                                </div>
+
+                                <form id="checkout-form">
+                                    <div class="form-check">
+                                        <input class="form-check-input mt-5 mx-3 js-radioInput" type="radio"
+                                            name="radio" value="razorpay" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            <img class=""
+                                                src="https://upload.wikimedia.org/wikipedia/en/8/89/Razorpay_logo.svg"
+                                                alt="" height="100" width="200">
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input mt-4 mx-3 js-radioInput" type="radio"
+                                            name="radio" value="paypal" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            <img src="https://pngimg.com/uploads/paypal/paypal_PNG15.png" alt=""
+                                                height="60" width="200">
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input mt-5 mx-3 js-radioInput" type="radio"
+                                            name="radio" value="COD" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            <img src="/images/—Pngtree—cash on delivery cod fast_6393505.png" alt=""
+                                                height="150" width="180">
+                                        </label>
+                                    </div>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mt-4">
+                        <div class="card border-0 ">
+                            <div class="card-header card-2">
+                                <p class="card-text text-muted mt-md-4 space">ORDER SUMMARY </p>
+                                <hr class="my-2">
+                            </div>
+
+
+                            <div class="card-body pt-0">
+
+                                <% for(let i=0; i<cart.items.length; i++) { %>
+                                <div class="row  justify-content-between">
+                                    <div class="col-auto col-md-7">
+                                        <div class="media flex-column flex-sm-row">
+                                            <img class=" img-fluid mb-2" src="/images/<%= cart.items[i].image1 %> "
+                                                width="62" height="62">
+                                            <div class="media-body  my-auto">
+                                                <div class="row ">
+                                                    <div class="col-auto">
+                                                        <h6 class="mb-0"><b><%= cart.items[i].productName %> </b></h6>
+                                                        <small class="text-muted"><%= cart.items[i].category %> </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" pl-0 flex-sm-col col-auto  my-auto">
+                                        <h6 class=""><%= cart.items[i].quantity %> </h6>
+                                    </div>
+                                    <div class=" pl-0 flex-sm-col col-auto  my-auto ">
+                                        <h6><b>₹ <%= cart.items[i].price %> </b></h6>
+                                    </div>
+                                </div>
+                                <hr class="my-2">
+                                <% } %>
+
+
+
+
+
+                                <div class="row mt-5">
+                                    <div class="col">
+                                        <div class="row justify-content-between">
+                                            <div class="col-4">
+                                                <h6 class="mb-3"><b>Subtotal</b></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 class="mb-3"><b>₹ <%= cart.bill %> </b></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-4">
+                                                <h6 class="mb-3"><b id="couponDiscount"></b></h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 class="mb-3" id="couponCode" style="color : green"></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 style=" color : red" class="mb-3"><b id="couponValue"></b></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col">
+                                                <h6 class="mb-3"><b>Shipping</b></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 class="mb-3" style="color: green"><b>Free</b></h6>
+                                            </div>
+                                        </div>
+                                        <hr class="my-0">
+                                        <div class="row justify-content-between">
+                                            <div class="col-3">
+                                                <h6 class="mb-3"></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-4">
+                                                <h6><b>Total</b></h6>
+                                            </div>
+                                            <div class="flex-sm-col col-auto">
+                                                <h6 class="mb-3"><b id="totalBill">₹ <%= cart.bill %> </b></h6>
+                                            </div>
+                                            <input type="hidden" name="orderBill" id="totalBillInput" value="">
+                                        </div>
+                                        <hr class="my-0">
+                                    </div>
+                                </div>
+
+
+                                <div class="row mb-5 mt-4 ">
+                                    <div class="col-md-7 col-lg-6 mx-auto"><button id="my_button" type="submit"
+                                            disabled="disabled" class="btn btn-block btn-dark btn-lg ">Confirm
+                                            Order</button></div>
+                                </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function orderSummaryValidation(cartBill) {
+        document.getElementById('couponValue').innerHTML = ""
+        document.getElementById('couponDiscount').innerHTML = ""
+        document.getElementById('couponCode').innerHTML = ""
+        document.getElementById('totalBill').innerHTML = "₹ " + cartBill;
+        document.getElementById('totalBillInput').value = cartBill;
+    }
+
+    $("#applyCoupon").submit((e) => {
+        console.log("ajax working")
+        e.preventDefault()
+        $.ajax({
+            url: '/cart/checkout/apply-coupon',
+            method: 'post',
+            data: $('#applyCoupon').serialize(),
+            success: (response) => {
+                console.log("The response")
+                if (response.couponValue) {
+                    let totalBill = response.cartBill - response.couponValue
+                    document.getElementById('couponValue').innerHTML = "- ₹ " + response.couponValue;
+                    document.getElementById('validation').innerHTML = "<span style=\"color : green\" >" + "Coupon Applied Successfully !!" + "</span>"
+                    document.getElementById('couponDiscount').innerHTML = "Coupon discount"
+                    document.getElementById('couponCode').innerHTML = "Applied " + response.couponCode
+                    document.getElementById('totalBill').innerHTML = "₹ " + totalBill;
+                    document.getElementById('totalBillInput').value = totalBill;
+                } else if (response.appliedUser) {
+                    document.getElementById('validation').innerHTML = "You already redeemed this Coupon !!"
+                    orderSummaryValidation(response.cartBill);
+                } else if (response.insufficientCartValue) {
+                    document.getElementById('validation').innerHTML = "Coupon cannot be Applied !!"
+                    orderSummaryValidation(response.cartBill);
+                } else if (response.expiredCoupon) {
+                    document.getElementById('validation').innerHTML = "Coupon has Expired !!"
+                    orderSummaryValidation(response.cartBill);
+                } else if (response.invalidCoupon) {
+                    document.getElementById('validation').innerHTML = "Invalid Coupon !!"
+                    orderSummaryValidation(response.cartBill);
+                }
+            }
+        })
+    })
+    // <//script>
+
+    // <script>
+
+    var inputElems = document.getElementsByClassName("js-radioInput");
+    for (var i = inputElems.length - 1; i >= 0; --i) {
+        var elem = inputElems[i];
+        elem.onchange = function () {
+            document.getElementById("my_button").removeAttribute("disabled");
+        };
+    }
+
+    $("#checkout-form").submit((e) => {
+        console.log("ajax working")
+        e.preventDefault()
+        $.ajax({
+            url: '/payment-mode',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                console.log("The response")
+
+                if (response.codSuccess) {
+                    console.log("COD working")
+                    location.replace('/order-success-redirect')
+                } else if (response.razorpay) {
+                    console.log("razorpay working")
+                    razorpayPayment(response.order)
+                } else if (response.paypal) {
+                    console.log("calling the paypal")
+                    location.replace('/paypal')
+                }
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+        console.log(order)
+        var options = {
+            "key": "rzp_test_8bFkeBhywF7wRI", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Camper Trek",
+            "description": "Test Transaction",
+            "image": "/images/logo.png",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                RazoverifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Camper Trek",
+                "email": "camper@gmail.com",
+                "contact": "+91 9567819494"
+            },
+            "notes": {
+                "address": "Camper Treks, Kazhakkoottam, Trivandrum"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        }
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function RazoverifyPayment(payment, order) {
+        location.replace('/order-success-redirect')
+
+        $.ajax({
+            url: '/userhome/razo-verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    console.log("succes")
+                    location.href = '/orderSuccess'
+                } else {
+                    // need to render payment faild page
+                    location.reload()
+                    alert("payment failed")
+                }
+            }
+        })
+    }
+
+
+</script>
+
+<%- include('../layouts/foot.ejs') %>
