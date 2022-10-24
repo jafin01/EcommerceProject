@@ -11,6 +11,7 @@ const CartProduct = require('../model/cart');
 const otp = require('../middlewares/otp');
 const Razorpay = require('razorpay');
 const Paypal = require('paypal-rest-sdk');
+const excelJs = require('exceljs');
 
 
 let session;
@@ -832,6 +833,65 @@ exports.couponManagement = (req, res) => {
                     }
                 })
         })
+}
+
+exports.downloadReport = (req, res) => {
+    let num = 1;
+    Order.find({ "items.orderStatus" : "Delivered" })
+        .then((orders) => {
+            res.render('admin/report', { orders, num })
+        })
+}
+
+exports.exportExcel=(req,res)=>{
+    Order.find()
+    .then((SalesReport)=>{
+      
+  
+   console.log(SalesReport)
+    try {
+      const workbook = new excelJs.Workbook();
+  
+      const worksheet = workbook.addWorksheet("Sales Report");
+  
+      worksheet.columns = [
+        { header: "S no.", key: "s_no" },
+        { header: "OrderID", key: "_id" },
+        { header: "Date", key: "orderDate" },
+        { header: "Products", key: "productName" },
+        { header: "Method", key: "paymentMethod" },
+    //     { header: "status", key: "status" },
+        { header: "Amount", key: "orderBill" },
+      ];
+      let counter = 1;
+      SalesReport.forEach((report) => {
+        report.s_no = counter;
+        report.productName = "";
+        // report.name = report.userid;
+        report.items.forEach((eachproduct) => {
+          report.productName += eachproduct.productName + ", ";
+        });
+        worksheet.addRow(report);
+        counter++;
+      });
+  
+      worksheet.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
+      });
+      
+  
+      res.header(
+        "Content-Type",
+        "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
+      );
+      res.header("Content-Disposition", "attachment; filename=report.xlsx");
+  
+      workbook.xlsx.write(res);
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+
 }
 
 exports.orderManagement = (req, res) => {

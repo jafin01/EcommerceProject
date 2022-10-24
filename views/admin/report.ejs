@@ -1,0 +1,93 @@
+<%- include('../layouts/head.ejs') %>
+
+<%- include('../partials/admin-navbar.ejs') %>
+
+
+
+
+<div class="container mt-5 table-responsive">
+
+    <div style="display: flex; flex-direction: row-reverse;">
+        <div class="btn-group contact mb-3">
+            <a class="btn btn-danger dropdown-toggle mb-2" data-bs-toggle="dropdown" aria-expanded="false">
+                Download
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/exportExcel">Excel</a></li>
+                <li><button class="dropdown-item" onclick="myfun('pt')">Pdf</button></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="table-wrap" id="pt">
+        <table id="myTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Slno</th>
+                    <th>Product</th>
+                    <th>Product name</th>
+                    <th>Order ID</th>
+                    <th>Category</th>
+                    <th>Payment mode</th>
+                    <th>Quantity</th>
+                    <th>Order Date</th>
+                    <th>CartValue</th>
+                    <th>OrderBill</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < orders.length; i++) { %>
+
+                    <% for(let j=0; j < orders[i].items.length; j++) { %> 
+                    <tr>
+                        <td><%= num++ %> </td>
+                        <td><img height="100" width="100" src="/images/<%= orders[i].items[j].image1 %>" alt=""></td>
+                        <td><%= orders[i].items[j].productName %> </td>
+                        <td><%= orders[i]._id %> </td>
+                        <td><%= orders[i].items[j].category %> </td>
+                        <td><%= orders[i].paymentMode %> </td>
+                        <td><%= orders[i].items[j].quantity %> </td>
+                        <td><%= ("0" + orders[i].orderDate.getDate()).slice(-2) %>-<%= ('0' + (orders[i].orderDate.getMonth()+1)).slice(-2) %>-<%= orders[i].orderDate.getFullYear().toString() %> </td>
+                        <td style="font-weight: 700;">₹ <%= orders[i].cartValue %> </td>
+                        <td style="font-weight: 700;">₹ <%= orders[i].orderBill %> </td>
+                        <td style="max-width: 200px"><%= orders[i].items[j].orderStatus %> </td>
+                    
+                        <% } %>
+                        <% } %>
+                    
+                        <!-- <td><a href="/edit-order-status?id=<%=// order.items[i]._id %>"><button type="submit" class="btn btn-success">View Products</button></a></td> -->
+                    
+                    
+                    </tr>
+                <%// } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+
+<script>
+    console.log("script working")
+    function myfun(pt) {
+        var bk = document.body.innerHTML;
+        var dv = document.getElementById('pt').innerHTML;
+        document.body.innerHTML = dv;
+        document.body.style.padding = "20px"
+        window.print();
+        location.reload();
+    }
+    $(document).ready(function () {
+        $('#myTable').DataTable()
+    });
+</script>
+
+
+<%- include('../layouts/foot.ejs') %>

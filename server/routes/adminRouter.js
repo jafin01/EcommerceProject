@@ -24,6 +24,10 @@ router.get('/admin_panel/user_management', services.adminLoggedIn, services.user
 
 router.get('/admin-panel/coupon-management', services.adminLoggedIn, services.couponManagement);
 
+router.get('/admin-panel/dashboard/download-report', services.adminLoggedIn, services.downloadReport);
+
+router.get('/admin/exportExcel',services.exportExcel)
+
 router.post('/admin_panel/users/block', services.userBlock)
 
 router.post('/admin_panel/users/unblock', services.userUnblock)
