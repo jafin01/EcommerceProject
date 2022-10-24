@@ -12,6 +12,7 @@ const otp = require('../middlewares/otp');
 const Razorpay = require('razorpay');
 const Paypal = require('paypal-rest-sdk');
 const excelJs = require('exceljs');
+const e = require('express');
 
 
 let session;
@@ -47,6 +48,10 @@ const updateCoupons = function (couponCode, user) {
             .then(() => {
                 resolve();
             })
+            .catch(() => {
+                const err = new Error('could not update')
+                reject(err);
+            })
     })
 }
 
@@ -58,6 +63,10 @@ const createOrder = function (order) {
         const newOrder = new Order(order);
         newOrder.save()
             .then(() => resolve())
+            .catch(() => {
+                const err = new Error('could not save');
+                reject(err);
+            })
     })
 }
 
@@ -66,6 +75,10 @@ const deleteCart = function (user) {
         Cart.deleteOne({ owner: user })
             .then(() => {
                 resolve();
+            })
+            .catch(() => {
+                const err = new Error('could not delete Cart')
+                reject(err);
             })
     })
 }
@@ -83,15 +96,28 @@ const validateCoupon = function () {
                                 .then(() => {
                                     return
                                 })
+                                .catch((err) => {
+                                    console.log(err.message);
+                                })
                         } else {
                             const status = "Expired"
-                            updateCouponStatus(coupon, status);
+                            updateCouponStatus(coupon, status)
+                                .then(() => {
+                                    return
+                                })
+                                .catch((err) => {
+                                    console.log(err.message);
+                                })
                         }
                     })
                     resolve();
                 } else {
                     resolve();
                 }
+            })
+            .catch(() => {
+                const err = new Error('could not find Coupon');
+                reject(err);
             })
     })
 }
@@ -102,6 +128,10 @@ const updateCouponStatus = function (coupon, status) {
             .then(() => {
                 resolve();
             })
+            .catch(() => {
+                const err = new Error('could not updated coupon')
+                reject(err);
+            })
     })
 }
 
@@ -110,6 +140,10 @@ const findUser = function (userEmail) {
         User.findOne({ email : userEmail })
             .then((user) => {
                 resolve(user);
+            })
+            .catch(() => {
+                const err = new Error('could not update user')
+                reject(err);
             })
     })
 }
@@ -121,6 +155,10 @@ const updateUser = function (user, editAddressIndex, newAddress) {
             .then(() => {
                 resolve();
             })
+            .catch(() => {
+                const err = new Error('could not replace user');
+                reject(err);
+            })
     })
 }
 
@@ -129,6 +167,10 @@ const findProducts = function (category) {
         Product.find({ category : category })
             .then((products) => {
                 resolve(products);
+            })
+            .catch(() => {
+                const err = new Error('could not find Product')
+                reject(err);
             })
     })
 }
@@ -139,6 +181,10 @@ const findCart = function (products, user) {
             .then((cart) => {
                 resolve([cart, products]);
             })
+            .catch(() => {
+                const err = new Error('could not find cart');
+                reject(err);
+            })
     })
 }
 
@@ -147,6 +193,43 @@ const updateUserPassword = function (user, newPassword) {
         User.updateOne({ email : user }, { $set : { password : newPassword.toString() } })
         .then(() => {
             resolve();
+        })
+        .catch(() => {
+            const err = new Error('could not update user')
+            reject(err);
+        })
+    })
+}
+
+const replaceProduct = function (productId, updatedProduct) {
+    return new Promise((resolve, reject) => {
+        Product.replaceOne({ _id : productId }, updatedProduct)
+            .then(() => {
+                resolve();
+            })
+            .catch(() => {
+                const err = new Error('could not replace product')
+                reject(err);
+            })
+    })
+}
+
+const updateProduct = function (productId, updatedProduct) {
+    return new Promise((resolve, reject) => {
+        Product.updateOne({ _id : productId }, { $set : {
+            productName : updatedProduct.productName,
+            actualPrice : updatedProduct.actualPrice,
+            discountedPrice : updatedProduct.discountedPrice,
+            description : updatedProduct.description,
+            stock : updatedProduct.stock,
+            category : updatedProduct.category
+        } })
+        .then(() => {
+            resolve();
+        })
+        .catch(() => {
+            const err = new Error('could not update product')
+            reject(err);
         })
     })
 }
@@ -208,11 +291,17 @@ exports.userHome = (req, res) => {
                     } else
                         return [];
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             wishlist.then((wishlist) => {
                 if(req.query.category){
                     findProducts(req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1))
                         .then((products) => {
                             return findCart(products, req.session.userId)
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
                         })
                         .then(([cart, products]) => {
                             if (cart) {
@@ -220,6 +309,9 @@ exports.userHome = (req, res) => {
                             } else {
                                 res.render('user/home', { products, cart: { items: [] }, wishlist, categories })
                             }
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
                         })
                 }else{
                     Product.find()
@@ -233,11 +325,23 @@ exports.userHome = (req, res) => {
                                         res.render('user/home', { products, cart: { items: [] }, wishlist, categories })
                                     }
                                 })
+                                .catch((err) => {
+                                    console.log(err.message);
+                                })
                         }
+                    })
+                    .catch((err) => {
+                        console.log(err.message)
                     })
                 }
                 
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -301,15 +405,28 @@ exports.wishlist = (req, res) => {
                     } else
                         return [];
                 })
-            wishlist.then((wishlist) => {
-                Cart.findOne({ owner: req.session.userId })
-                    .then((cart) => {
-                        if (cart)
-                            res.render('user/wishlist', { cart, wishlist, categories })
-                        else
-                            res.render('user/wishlist', { cart: { items: [] }, wishlist, categories })
-                    })
-            })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+            wishlist
+                .then((wishlist) => {
+                    Cart.findOne({ owner: req.session.userId })
+                        .then((cart) => {
+                            if (cart)
+                                res.render('user/wishlist', { cart, wishlist, categories })
+                            else
+                                res.render('user/wishlist', { cart: { items: [] }, wishlist, categories })
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -324,16 +441,29 @@ exports.cart = (req, res) => {
                     } else
                         return [];
                 })
-            wishlist.then((wishlist) => {
-                Cart.findOne({ owner: req.session.userId })
-                    .then((cart) => {
-                        if (cart) {
-                            res.render('user/cart', { cart, wishlist, categories });
+                .catch((err) => {
+                    console.log(err.message);
+                })
+            wishlist
+                .then((wishlist) => {
+                    Cart.findOne({ owner: req.session.userId })
+                        .then((cart) => {
+                            if (cart) {
+                                res.render('user/cart', { cart, wishlist, categories });
 
-                        } else
-                            res.render('user/cart', { cart: { items: [] }, wishlist, categories });
-                    })
-            })
+                            } else
+                                res.render('user/cart', { cart: { items: [] }, wishlist, categories });
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -347,6 +477,9 @@ exports.checkout = (req, res) => {
                         return oldWishlist.items;
                     } else
                         return [];
+                })
+                .catch((err) => {
+                    console.log(err.message);
                 })
             wishlist.then((wishlist) => {
                 User.findOne({ email: req.session.userId })
@@ -368,8 +501,20 @@ exports.checkout = (req, res) => {
                                     }
                                 }
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -382,6 +527,9 @@ exports.addAddress = (req, res) => {
                         return oldWishlist.items;
                     } else
                         return [];
+                })
+                .catch((err) => {
+                    console.log(err.message);
                 })
             wishlist.then((wishlist) => {
                 Cart.findOne({ owner: req.session.userId })
@@ -397,7 +545,16 @@ exports.addAddress = (req, res) => {
                             res.render('user/addAddress', { cart: { items: [] }, userAddress, wishlist, categories })
                         }
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -412,6 +569,9 @@ exports.paymentPage = (req, res) => {
                     } else
                         return [];
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             wishlist.then((wishlist) => {
                 User.findOne({ email: req.session.userId })
                     .then((user) => {
@@ -425,6 +585,9 @@ exports.paymentPage = (req, res) => {
                                         res.render('user/payment', { userAddress, cart: { items: [] }, wishlist, categories })
                                     }
                                 })
+                                .catch((err) => {
+                                    console.log(err.message);
+                                })
                         } else {
                             userAddress = user.address[+req.query.index]
                             Cart.updateOne({ owner: req.session.userId }, { $set: { address: userAddress } })
@@ -433,16 +596,31 @@ exports.paymentPage = (req, res) => {
                                         .then((cart) => {
                                             res.render('user/payment', { cart, wishlist, indexOfSelectedAddress, categories })
                                         })
+                                        .catch((err) => {
+                                            console.log(err.message);
+                                        })
+                                })
+                                .catch((err) => {
+                                    console.log(err.message);
                                 })
                         }
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
 exports.paypal = (req, res) => {
     const INR_USD_CONVERTION_RATE = 0.01368
-    let bill = Math.round(+req.session.order.orderBill * INR_USD_CONVERTION_RATE)
+    const bill = Math.round(+req.session.order.orderBill * INR_USD_CONVERTION_RATE)
 
     Paypal.configure({
         'mode': 'sandbox', //sandbox or live 
@@ -451,7 +629,7 @@ exports.paypal = (req, res) => {
     });
 
     // create payment object 
-    let payment = {
+    const payment = {
         "intent": "authorize",
         "payer": {
             "payment_method": "paypal"
@@ -469,7 +647,7 @@ exports.paypal = (req, res) => {
         }]
     }
 
-    let createPay = (payment) => {
+    const createPay = (payment) => {
         return new Promise((resolve, reject) => {
             Paypal.payment.create(payment, function (err, payment) {
                 if (err) {
@@ -511,7 +689,7 @@ exports.razorpay = (req, res) => {
         key_secret: `${process.env.RAZORPAY_KEY_SECRET}`
     })
 
-    let options = {
+    const options = {
         amount: bill * 100,  // amount in the smallest currency unit
         currency: "INR"
     };
@@ -532,6 +710,9 @@ exports.orderSuccess = (req, res) => {
                     } else
                         return [];
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             wishlist.then((wishlist) => {
                 couponCode = req.session.coupon.couponCode || ''
                 user = req.session.userId
@@ -540,14 +721,29 @@ exports.orderSuccess = (req, res) => {
                         newOrder = req.session.order;
                         return createOrder(newOrder)
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
                     .then(() => {
                         return deleteCart(user)
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
                     .then(() => {
                         res.render('user/orderSuccess', { cart: { items: [] }, wishlist, categories })
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
 
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -561,6 +757,9 @@ exports.productView = (req, res) => {
                     } else
                         return [];
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             wishlist.then((wishlist) => {
                 Product.findOne({ _id: ObjectID(req.query.id) })
                     .then((product) => {
@@ -571,8 +770,20 @@ exports.productView = (req, res) => {
                                 } else
                                     res.render('user/productView', { product, cart: { items: [] }, wishlist, categories })
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -586,6 +797,9 @@ exports.myAccount = (req, res) => {
                         return oldWishlist.items;
                     } else
                         return [];
+                })
+                .catch((err) => {
+                    console.log(err.message);
                 })
             wishlist.then((wishlist) => {
                 Cart.findOne({ owner: req.session.userId })
@@ -619,8 +833,20 @@ exports.myAccount = (req, res) => {
                                 }
                                 
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -642,16 +868,15 @@ exports.editAddress = (req, res) => {
         .then((user) => {
             return updateUser(user, editAddressIndex, newAddress);
         })
+        .catch((err) => {
+            console.log(err.message)
+        })
         .then(() => {
             res.redirect('/myAccount');
         })
-
-    // User.updateOne({ email : userEmail }, { $set : { "address.$[elem]" : newAddress } },{ arrayFilters: [{ elem: editAddressId }] })
-    //     .then(() => {
-    //         res.send("updated");
-    //     })
-
-    
+        .catch((err) => {
+            console.log(err.message);
+        })
 }
 
 exports.changePassword = (req, res) => {
@@ -683,6 +908,9 @@ exports.changePassword = (req, res) => {
                     .then(() => {
                         res.redirect('/myAccount');
                     })
+                    .catch((err) => {
+                        console.log(err.message)
+                    })
                 }else{
                     validation.changeConfirmPassError = true;
                     res.redirect('/myAccount?passEdit=true')
@@ -691,6 +919,9 @@ exports.changePassword = (req, res) => {
                 validation.changeOldPassError = true;
                 res.redirect('/myAccount?passEdit=true')
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
         
         
@@ -705,6 +936,9 @@ exports.allOrders = (req, res) => {
                         return oldWishlist.items;
                     } else
                         return [];
+                })
+                .catch((err) => {
+                    console.log(err.message);
                 })
             wishlist.then((wishlist) => {
                 Order.find({ owner: req.session.userId })
@@ -722,8 +956,20 @@ exports.allOrders = (req, res) => {
                                     else
                                         res.render('user/allOrders', { cart: { items: [] }, wishlist, orders: [], categories });
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -738,6 +984,9 @@ exports.orderStatus = (req, res) => {
                     } else
                         return [];
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             wishlist.then((wishlist) => {
                 Cart.findOne({ owner: req.session.userId })
                     .then((cart) => {
@@ -748,8 +997,20 @@ exports.orderStatus = (req, res) => {
                                 } else
                                     res.render('user/orderStatus', { cart: { items: [] }, wishlist, order, categories })
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -771,6 +1032,8 @@ exports.userManagement = (req, res) => {
     User.find((err, users) => {
         if (!err) {
             res.render('admin/users', { users });
+        }else{
+            console.log(err.message);
         }
     })
 }
@@ -781,12 +1044,27 @@ exports.productManagement = (req, res) => {
             let num = 1;
             res.render('admin/products', { result, num });
         })
+        .catch((err) => {
+            console.log(err.message);
+        })
 }
 
 exports.addProductPage = (req, res) => {
     Category.find()
         .then((categories) => {
-            res.render('admin/addProduct', { categories })
+            if(req.query.edit) {
+                Product.findOne({ _id : req.query.id })
+                    .then((product) => {
+                        res.render('admin/addProduct', { categories, product })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
+            }else
+                res.render('admin/addProduct', { categories, product : '' })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -806,6 +1084,9 @@ exports.categoryManagement = (req, res) => {
                 res.render('admin/categoryManagement', { category: { name: "" }, categories, validation })
                 validation.categoryExists = false;
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -832,6 +1113,12 @@ exports.couponManagement = (req, res) => {
                         validation.couponExists = false;
                     }
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -841,56 +1128,62 @@ exports.downloadReport = (req, res) => {
         .then((orders) => {
             res.render('admin/report', { orders, num })
         })
+        .catch((err) => {
+            console.log(err.message);
+        })
 }
 
-exports.exportExcel=(req,res)=>{
+exports.exportExcel = (req, res) => {
     Order.find()
-    .then((SalesReport)=>{
-      
-  
-   console.log(SalesReport)
-    try {
-      const workbook = new excelJs.Workbook();
-  
-      const worksheet = workbook.addWorksheet("Sales Report");
-  
-      worksheet.columns = [
-        { header: "S no.", key: "s_no" },
-        { header: "OrderID", key: "_id" },
-        { header: "Date", key: "orderDate" },
-        { header: "Products", key: "productName" },
-        { header: "Method", key: "paymentMethod" },
-    //     { header: "status", key: "status" },
-        { header: "Amount", key: "orderBill" },
-      ];
-      let counter = 1;
-      SalesReport.forEach((report) => {
-        report.s_no = counter;
-        report.productName = "";
-        // report.name = report.userid;
-        report.items.forEach((eachproduct) => {
-          report.productName += eachproduct.productName + ", ";
-        });
-        worksheet.addRow(report);
-        counter++;
-      });
-  
-      worksheet.getRow(1).eachCell((cell) => {
-        cell.font = { bold: true };
-      });
-      
-  
-      res.header(
-        "Content-Type",
-        "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
-      );
-      res.header("Content-Disposition", "attachment; filename=report.xlsx");
-  
-      workbook.xlsx.write(res);
-    } catch (err) {
-      console.log(err.message);
-    }
-  });
+        .then((SalesReport) => {
+
+
+            console.log(SalesReport)
+            try {
+                const workbook = new excelJs.Workbook();
+
+                const worksheet = workbook.addWorksheet("Sales Report");
+
+                worksheet.columns = [
+                    { header: "S no.", key: "s_no" },
+                    { header: "OrderID", key: "_id" },
+                    { header: "Date", key: "orderDate" },
+                    { header: "Products", key: "productName" },
+                    { header: "Method", key: "paymentMethod" },
+                    //     { header: "status", key: "status" },
+                    { header: "Amount", key: "orderBill" },
+                ];
+                let counter = 1;
+                SalesReport.forEach((report) => {
+                    report.s_no = counter;
+                    report.productName = "";
+                    // report.name = report.userid;
+                    report.items.forEach((eachproduct) => {
+                        report.productName += eachproduct.productName + ", ";
+                    });
+                    worksheet.addRow(report);
+                    counter++;
+                });
+
+                worksheet.getRow(1).eachCell((cell) => {
+                    cell.font = { bold: true };
+                });
+
+
+                res.header(
+                    "Content-Type",
+                    "application/vnd.oppenxmlformats-officedocument.spreadsheatml.sheet"
+                );
+                res.header("Content-Disposition", "attachment; filename=report.xlsx");
+
+                workbook.xlsx.write(res);
+            } catch (err) {
+                console.log(err.message);
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        })
 
 }
 
@@ -898,6 +1191,9 @@ exports.orderManagement = (req, res) => {
     Order.find()
         .then((orders) => {
             res.render('admin/orders', { orders })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -907,6 +1203,9 @@ exports.editOrderStatus = (req, res) => {
             if (order) {
                 res.render('admin/editOrderStatus', { order })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -929,6 +1228,9 @@ exports.sendOtp = (req, res) => {
             } else {
                 res.redirect('/mobile_verification?mobile=false');
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1004,6 +1306,9 @@ exports.login = (req, res) => {
                             res.redirect('/user_signin?register=false');
                         }
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
             }
         })
         .catch((err) => console.log(err))
@@ -1043,10 +1348,19 @@ exports.addToCart = (req, res) => {
                                                 .then(() => {
                                                     res.redirect('/wishlist')
                                                 })
+                                                .catch((err) => {
+                                                    console.log(err.message);
+                                                })
                                         } else
                                             res.redirect('/user_home')
                                     })
+                                    .catch((err) => {
+                                        console.log(err.message);
+                                    })
 
+                            })
+                            .catch((err) => {
+                                console.log(err.message);
                             })
                         } else {
                             Product.findOne({ _id: req.query.id })
@@ -1076,11 +1390,23 @@ exports.addToCart = (req, res) => {
                                                 .then(() => {
                                                     res.redirect('/wishlist')
                                                 })
+                                                .catch((err) => {
+                                                    console.log(err.message);
+                                                })
                                             } else
                                                 res.redirect('/user_home');
                                         })
+                                        .catch((err) => {
+                                            console.log(err.message);
+                                        })
+                                })
+                                .catch((err) => {
+                                    console.log(err.message);
                                 })
                         }
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             } else {
                 Product.findOne({ _id: req.query.id })
@@ -1107,8 +1433,17 @@ exports.addToCart = (req, res) => {
                                 } else
                                     res.redirect('/user_home');
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1136,6 +1471,9 @@ exports.cartOperation = (req, res) => {
                         .then(() => {
                             res.redirect('/cart');
                         })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                 } else {
                     newCart.items.splice(indexOfOldItem, 1);
                     Cart.replaceOne({ owner: oldCart.owner }, {
@@ -1151,10 +1489,19 @@ exports.cartOperation = (req, res) => {
                                             .then(() => {
                                                 res.redirect('/cart');
                                             })
+                                            .catch((err) => {
+                                                console.log(err.message);
+                                            })
                                     } else {
                                         res.redirect('/cart');
                                     }
                                 })
+                                .catch((err) => {
+                                    console.log(err.message);
+                                })
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
                         })
                 }
             }
@@ -1165,12 +1512,21 @@ exports.cartOperation = (req, res) => {
                 cartItem.then((cartItem) => {
                     operations(cartItem);
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             } else {
                 let cartItem = cart.subtract(req.query.id)
                 cartItem.then((cartItem) => {
                     operations(cartItem);
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1202,11 +1558,23 @@ exports.deleteFromCart = (req, res) => {
                                     .then(() => {
                                         res.redirect('/cart');
                                     })
+                                    .catch((err) => {
+                                        console.log(err.message);
+                                    })
                             } else {
                                 res.redirect('/cart');
                             }
                         })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1233,6 +1601,9 @@ exports.addToWishlist = (req, res) => {
                                         else
                                             res.redirect('/user_home')
                                     })
+                                    .catch((err) => {
+                                        console.log(err.message);
+                                    })
                             } else {
                                 Wishlist.updateOne({ owner: req.session.userId }, { $set: { items: oldItem.items } })
                                     .then(() => {
@@ -1240,6 +1611,9 @@ exports.addToWishlist = (req, res) => {
                                             res.redirect('/wishlist')
                                         else
                                             res.redirect('/user_home')
+                                    })
+                                    .catch((err) => {
+                                        console.log(err.message);
                                     })
                             }
 
@@ -1261,8 +1635,17 @@ exports.addToWishlist = (req, res) => {
                                             else
                                                 res.redirect('/user_home')
                                         })
+                                        .catch((err) => {
+                                            console.log(err.message);
+                                        })
+                                })
+                                .catch((err) => {
+                                    console.log(err.message);
                                 })
                         }
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             } else {
                 Product.findOne({ _id: req.query.id })
@@ -1280,8 +1663,17 @@ exports.addToWishlist = (req, res) => {
                             .then(() => {
                                 res.redirect('/user_home')
                             })
+                            .catch((err) => {
+                                console.log(err.message);
+                            })
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
                     })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1308,6 +1700,9 @@ exports.applyCoupon = (req, res) => {
                                                 req.session.coupon = selectedCoupon;
                                                 res.json({ couponValue: selectedCoupon.couponValue, couponCode: selectedCoupon.couponCode, cartBill: cart.bill });
                                             })
+                                            .catch((err) => {
+                                                console.log(err.message);
+                                            })
                                     }
                                 } else {
                                     res.json({ insufficientCartValue: true, cartBill: cart.bill })
@@ -1322,10 +1717,22 @@ exports.applyCoupon = (req, res) => {
                                             res.json({ invalidCoupon: true, cartBill: cart.bill })
                                         }
                                     })
+                                    .catch((err) => {
+                                        console.log(err.message);
+                                    })
                             }
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
                         })
 
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 
 }
@@ -1350,7 +1757,13 @@ exports.shipping = (req, res) => {
                         .then(() => {
                             res.redirect('/myAccount')
                         })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                 }
+            })
+            .catch((err) => {
+                console.log(err.message);
             })
                     
     }else if (req.body.save) {
@@ -1372,6 +1785,9 @@ exports.shipping = (req, res) => {
                         .then(() => {
                             res.redirect('/cart/checkout')
                         })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                 } else {
                     let updatedUser = user;
                     updatedUser.address = [{
@@ -1387,8 +1803,14 @@ exports.shipping = (req, res) => {
                         .then(() => {
                             res.send("updated");
                         })
+                        .catch((err) => {
+                            console.log(err.message);
+                        })
                 }
 
+            })
+            .catch((err) => {
+                console.log(err.message);
             })
     } else {
         let anonymousAddress = {
@@ -1443,6 +1865,9 @@ exports.paymentMode = (req, res) => {
                 res.redirect('/razorpay');
             }
         })
+        .catch((err) => {
+            console.log(err.message);
+        })
 }
 
 exports.cancelOrder = (req, res) => {
@@ -1450,12 +1875,18 @@ exports.cancelOrder = (req, res) => {
         .then(() => {
             res.redirect(`/order-status?id=${req.query.orderId}`)
         })
+        .catch((err) => {
+            console.log(err.message);
+        })
 }
 
 exports.returnOrder = (req, res) => {
     Order.updateOne({ _id: req.query.orderId }, { $set: { "items.$[elem].orderStatus": "Return initiated" } }, { arrayFilters: [{ "elem._id": req.query.itemId }] })
         .then(() => {
             res.redirect(`/order-status?id=${req.query.orderId}`)
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1475,7 +1906,13 @@ exports.adminSignin = (req, res) => {
                         } else
                             res.redirect('/admin_login?register=false');
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1525,10 +1962,53 @@ exports.addProduct = (req, res, next) => {
         .catch((err) => console.log(err))
 }
 
+exports.editProduct = (req, res) => {
+    if(req.files[0] && req.files[0].filename && req.files[1] && req.files[1].filename ) {
+        const updatedProduct = {
+            productName : req.body.productName,
+            actualPrice : req.body.actualPrice,
+            discountedPrice : req.body.discountedPrice,
+            description : req.body.description,
+            stock : req.body.stock,
+            category : req.body.category,
+            image1: req.files[0] && req.files[0].filename ? req.files[0].filename : "",
+            image2: req.files[1] && req.files[1].filename ? req.files[1].filename : ""
+        }
+        replaceProduct(req.query.id, updatedProduct)
+            .then(() => {
+                res.redirect('/admin_panel/product_management')
+            })
+            .catch((err) => {
+                console.log(err.message);
+            })
+
+    }else{
+        console.log("in-else")
+        const updatedProduct = {
+            productName : req.body.productName,
+            actualPrice : req.body.actualPrice,
+            discountedPrice : req.body.discountedPrice,
+            description : req.body.description,
+            stock : req.body.stock,
+            category : req.body.category
+        }
+        updateProduct(req.query.id, updatedProduct)
+            .then(() => {
+                res.redirect('/admin_panel/product_management')
+            })
+            .catch((err) => {
+                console.log(err.message);
+            })
+    }
+}
+
 exports.deleteProduct = (req, res) => {
     Product.deleteOne({ _id: req.query.id })
         .then(() => {
             res.redirect('/admin_panel/product_management')
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1538,21 +2018,33 @@ exports.editStatus = (req, res) => {
             .then(() => {
                 res.redirect(`/admin_panel/order_management/edit-order-status?id=${req.query.orderId}`)
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
 
     } else if (req.query.deny) {
         Order.updateOne({ _id: req.query.orderId }, { $set: { "items.$[elem].orderStatus": "Cancelled" } }, { arrayFilters: [{ "elem._id": req.query.itemId }] })
             .then(() => {
                 res.redirect(`/admin_panel/order_management/edit-order-status?id=${req.query.orderId}`)
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
     } else if (req.query.shipped) {
         Order.updateOne({ _id: req.query.orderId }, { $set: { "items.$[elem].orderStatus": "Shipped" } }, { arrayFilters: [{ "elem._id": req.query.itemId }] })
             .then(() => {
                 res.redirect(`/admin_panel/order_management/edit-order-status?id=${req.query.orderId}`)
             })
+            .catch((err) => {
+                console.log(err.message);
+            })
     } else if (req.query.delivered) {
         Order.updateOne({ _id: req.query.orderId }, { $set: { "items.$[elem].orderStatus": "Delivered" } }, { arrayFilters: [{ "elem._id": req.query.itemId }] })
             .then(() => {
                 res.redirect(`/admin_panel/order_management/edit-order-status?id=${req.query.orderId}`)
+            })
+            .catch((err) => {
+                console.log(err.message);
             })
     }
 }
@@ -1571,7 +2063,13 @@ exports.addNewCategory = (req, res) => {
                     .then(() => {
                         res.redirect('/admin-panel/category-management')
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1587,7 +2085,13 @@ exports.updateCategory = (req, res) => {
                     .then(() => {
                         res.redirect('/admin-panel/category-management')
                     })
+                    .catch((err) => {
+                        console.log(err.message);
+                    })
             }
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1595,6 +2099,9 @@ exports.deleteCategory = (req, res) => {
     Category.deleteOne({ _id: req.query.id })
         .then(() => {
             res.redirect('/admin-panel/category-management');
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1608,6 +2115,9 @@ exports.addCoupon = (req, res) => {
     newCoupon.save()
         .then(() => {
             res.redirect('/admin-panel/coupon-management');
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1624,6 +2134,12 @@ exports.updateCoupon = (req, res) => {
                 .then(() => {
                     res.redirect('/admin-panel/coupon-management')
                 })
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1631,6 +2147,9 @@ exports.deleteCoupon = (req, res) => {
     Coupon.deleteOne({ _id: req.query.id })
         .then(() => {
             res.redirect('/admin-panel/coupon-management');
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
@@ -1706,6 +2225,9 @@ exports.test = (req, res) => {
             }, 0)
 
             res.json({ salesOfTheYear : monthlySalesTurnover, quarterlySales : quarterlySalesTurnover, annualSales : annualSales })
+        })
+        .catch((err) => {
+            console.log(err.message);
         })
 }
 
