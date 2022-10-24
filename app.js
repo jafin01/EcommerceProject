@@ -44,6 +44,12 @@ db.connectToDb((err) => {
 app.use(userRouter);
 app.use(adminRouter);
 
+//404
+
+app.use((req, res) => {
+    res.status(404).render('error/404')
+})
+
 
 
 
