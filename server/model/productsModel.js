@@ -27,10 +27,6 @@ const ProductSchema = new Schema({
         type : String,
         required : true
     },
-    subCategory : {
-        type : String, 
-        required : true
-    },
     image1 : {
         type : String, 
         required : true

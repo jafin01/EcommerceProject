@@ -32,7 +32,9 @@ router.post('/admin_panel/users/block', services.userBlock)
 
 router.post('/admin_panel/users/unblock', services.userUnblock)
 
-router.post('/admin_panel/product_management/add_product', store.any(), services.addProduct)
+router.post('/admin_panel/product_management/add_product', store.any(), services.addProduct);
+
+router.post('/admin-panel/product-management/edit-product', services.adminLoggedIn, store.any(), services.editProduct);
 
 router.post('/admin_panel/delete-product', services.deleteProduct);
 
