@@ -1,0 +1,29 @@
+[33mcommit a1ad32b9ab3c697e89ace338209b1044d1339691[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Jafin Jahfar <jafinjahfar@gmail.com>
+Date:   Sat Oct 22 20:52:06 2022 +0530
+
+    Added all folders
+
+[33mcommit db0c6832be855904df3c4b290cfd5d8ee4b7c5f7[m
+Author: Jafin Jahfar <jafinjahfar@gmail.com>
+Date:   Sat Oct 22 20:51:30 2022 +0530
+
+    Added views folder
+
+[33mcommit ad1ae45e4f4df85a300ad5c155ac12dd717d0d53[m
+Author: Jafin Jahfar <jafinjahfar@gmail.com>
+Date:   Sat Oct 22 20:50:40 2022 +0530
+
+    Created app.js
+
+[33mcommit 254a7a70fd1179f372fc590c0856310c6ad5d5e1[m
+Author: Jafin Jahfar <jafinjahfar@gmail.com>
+Date:   Sat Oct 22 20:49:29 2022 +0530
+
+    added config folder
+
+[33mcommit a873410580a974e3b1177a821835795197591cb1[m
+Author: Jafin Jahfar <jafinjahfar@gmail.com>
+Date:   Sat Oct 22 20:46:20 2022 +0530
+
+    Added gitignore
