@@ -821,7 +821,7 @@ exports.myAccount = (req, res) => {
                             .then((user) => {
                                 if(req.query.edit){
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : req.query.index, userEdit : {} });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : req.query.index });
                                     } else
                                         res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : req.query.index });
                                 }else if(req.query.add){
