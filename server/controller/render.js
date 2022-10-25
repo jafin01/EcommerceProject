@@ -840,9 +840,9 @@ exports.myAccount = (req, res) => {
                                         validation.changeOldPassError = false;
                                 }else if(req.query.userEdit){
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : req.query.userEdit });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : "", passEdit : '', userEdit : req.query.userEdit });
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : req.query.userEdit });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : "", passEdit : '', userEdit : req.query.userEdit });
                                 }else{
                                     if (cart) {
                                         res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : "" });
