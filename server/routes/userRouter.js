@@ -6,13 +6,13 @@ const store = require('../middlewares/multer')
 
 const router = express.Router();
 
-router.get('/', services.isLoggedOut, services.user)
+router.get('/', services.user)
 
 router.get('/user_signin', services.isLoggedOut, services.userLogin)
 
 router.get('/user_registration', services.userSignup)
 
-router.get('/user_home', services.isLoggedIn, services.userHome)
+router.get('/user_home', services.userHome)
 
 router.get('/wishlist', services.isLoggedIn, services.wishlist)
 
@@ -40,7 +40,7 @@ router.get('/mobile_verification',services.isLoggedOut, services.mobileVerificat
 
 router.get('/mobile_verification/otp', services.isMobileFound, services.otpPage)
 
-router.get('/user-home/product',services.isLoggedIn, services.productView);
+router.get('/user-home/product', services.productView);
 
 router.post('/user/send-otp', services.sendOtp)
 

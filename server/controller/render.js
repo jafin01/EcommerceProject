@@ -290,7 +290,7 @@ exports.isMobileFound = (req, res, next) => {
 /////////////////////
 
 exports.user = (req, res) => {
-    res.redirect('/user_signin')
+    res.redirect('/user_home')
 }
 
 exports.userHome = (req, res) => {
