@@ -1,6 +1,8 @@
 const express = require('express');
 const services = require('../controller/render');
 const User = require('../model/userModel');
+const store = require('../middlewares/multer')
+
 
 const router = express.Router();
 
@@ -63,6 +65,8 @@ router.post('/cart/checkout/shipping/add-new-address', services.isLoggedIn, serv
 router.post('/cart/checkout/shipping/edit-address', services.isLoggedIn, services.editAddress);
 
 router.post('/myAccount/change-password', services.isLoggedIn, services.changePassword);
+
+router.post('/myAccount/edit-user', services.isLoggedIn, store.any(), services.editUser);
 
 router.post('/payment', services.isLoggedIn, services.payment);
 

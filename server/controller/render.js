@@ -234,6 +234,19 @@ const updateProduct = function (productId, updatedProduct) {
     })
 }
 
+const editUser = function (user, updatedUser) {
+    return new Promise((resolve, reject) => {
+        User.updateOne({ email : user }, { $set : { name : updatedUser.name, email : updatedUser.email, mobile : updatedUser.mobile, avatar : updatedUser.avatar } })
+            .then(() => {
+                resolve();
+            })
+            .catch(() => {
+                const err = new Error('user could not be updated');
+                reject(err);
+            })
+    })
+}
+
 //session handling//
 exports.isLoggedIn = (req, res, next) => {
     session = req.session;
@@ -825,11 +838,16 @@ exports.myAccount = (req, res) => {
                                         res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : "", passEdit : req.query.passEdit, validation });
                                         validation.changeConfirmPassError = false;
                                         validation.changeOldPassError = false;
+                                }else if(req.query.userEdit){
+                                    if (cart) {
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : user });
+                                    } else
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : user });
                                 }else{
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : '' });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : '' });
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : '', passEdit : '' });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : '' });
                                 }
                                 
                             })
@@ -925,6 +943,22 @@ exports.changePassword = (req, res) => {
         })
         
         
+}
+
+exports.editUser = (req, res) => {
+    const updatedUser = {
+        name : req.body.name,
+        email : req.body.email,
+        mobile : req.body.mobile,
+        avatar : req.files[0] && req.files[0].filename ? req.files[0].filename : ""
+    }
+    editUser(req.session.userId, updatedUser)
+        .then(() => {
+            res.redirect('/myAccount');
+        })
+        .catch((err) => {
+            console.log(err.message);
+        })
 }
 
 exports.allOrders = (req, res) => {

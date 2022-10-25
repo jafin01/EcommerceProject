@@ -32,7 +32,11 @@ const UserSchema = new Schema({
         state : { type : String },
         zip : { type : Number } 
 
-    }]
+    }],
+    avatar : {
+        type : String, 
+        required : true
+    }
 }, { timestamps : true }) 
 
 
