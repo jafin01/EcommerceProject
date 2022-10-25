@@ -296,7 +296,7 @@ exports.userHome = (req, res) => {
                 })
             wishlist.then((wishlist) => {
                 if(req.query.category){
-                    findProducts(req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1))
+                    findProducts(req.query.category.toUpperCase())
                         .then((products) => {
                             return findCart(products, req.session.userId)
                         })
