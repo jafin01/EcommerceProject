@@ -12,9 +12,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-
         <div>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
                   <a class="nav-link" href="/user_home">HOME</a>
               </li>
@@ -35,29 +34,26 @@
 
               <div class="col-md-6">
 
-                <div class="form" style="min-width: 5vw;">
-                  <i class="fa fa-search"></i>
-                  <input type="text" class="form-control form-input" placeholder="Search...">
-                </div>
-                
               </div>
               
             </div>
             
           </div> 
-            <% if(wishlist.length === 0 ) { %>
-              <a class="nav-icon-link my-auto" href="/wishlist"><i class="fa-regular fa-heart"></i></a>
-            <% }else{ %>
-              <a class="nav-icon-link my-auto position-relative" href="/wishlist"><i class="fa-regular fa-heart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= wishlist.length %>  </span></a>
-            <% } %> 
+            <div style=" padding-top : 10px; display: flex; gap : 10px">
+              <% if(wishlist.length === 0 ) { %>
+                <a class="nav-icon-link my-auto" href="/wishlist"><i class="fa-regular fa-heart"></i></a>
+              <% }else{ %>
+                <a class="nav-icon-link my-auto position-relative" href="/wishlist"><i class="fa-regular fa-heart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= wishlist.length %>  </span></a>
+              <% } %> 
 
-            <% if(cart.items.length === 0) { %>
-            <a class="nav-icon-link my-auto" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
-            <% }else{ %>  
-              <a class="nav-icon-link my-auto position-relative" href="/cart"><i class="fa-solid fa-cart-shopping"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= cart.items.length %>  </span></a>
-            <% } %> 
-            <a class="nav-icon-link my-auto" href="/myAccount"><i class="fa-solid fa-user-large"></i></a> 
-            <a class="nav-icon-link my-auto" style="cursor: pointer"><i class="fa-solid fa-right-from-bracket" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>
+              <% if(cart.items.length === 0) { %>
+                <a class="nav-icon-link my-auto" href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+              <% }else{ %>  
+                <a class="nav-icon-link my-auto position-relative" href="/cart"><i class="fa-solid fa-cart-shopping"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= cart.items.length %>  </span></a>
+              <% } %> 
+              <a class="nav-icon-link my-auto" href="/myAccount"><i class="fa-solid fa-user-large"></i></a> 
+              <a class="nav-icon-link my-auto" style="cursor: pointer"><i class="fa-solid fa-right-from-bracket" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>
+            </div>
           </div>
 
     </div>
