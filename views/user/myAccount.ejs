@@ -176,13 +176,13 @@
                                     <% }else if(userEdit) { %> 
                                       <form action="/myAccount/edit-user" method="post" enctype="multipart/form-data" >
                                         <label class="form-label mt-0 mb-0" for="form3Examplea2">Enter Your Name</label>
-                                        <input name="name" value="<%= userEdit.name %> " style="border: 1px solid black" type="text" id="form3Examplea2" class="form-control form-control-lg mt-0" required />
+                                        <input name="name" value="<%= user.name %> " style="border: 1px solid black" type="text" id="form3Examplea2" class="form-control form-control-lg mt-0" required />
     
                                         <label class="form-label mt-2 mb-0" for="form3Examplea2">Enter Your Email</label>
-                                        <input name="email" value="<%= userEdit.email %> " style="border: 1px solid black" type="email" id="form3Examplea2" class="form-control form-control-lg mt-0" required />
+                                        <input name="email" value="<%= user.email %> " style="border: 1px solid black" type="email" id="form3Examplea2" class="form-control form-control-lg mt-0" required />
     
                                         <label class="form-label mt-2 mb-0" for="form3Examplea2">Enter Mobile</label>
-                                        <input name="mobile" value="<%= userEdit.mobile %> " style="border: 1px solid black" type="tel" id="form3Examplea2" class="form-control form-control-lg mt-0" required />
+                                        <input name="mobile" value="<%= user.mobile %> " style="border: 1px solid black" type="tel" id="form3Examplea2" class="form-control form-control-lg mt-0" required />
 
                                         <label class="form-label mt-2 mb-0" for="form3Examplea2">Upload Avatar</label>
                                         <input name="profile" style="border: 1px solid black" type="file" id="form3Examplea2" class="form-control form-control-lg mt-0" accept="image/*" />

@@ -823,31 +823,31 @@ exports.myAccount = (req, res) => {
                                     if (cart) {
                                         res.render('user/myAccount', { cart, wishlist, categories, user, index : req.query.index, userEdit : {} });
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : req.query.index, userEdit : {} });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : req.query.index });
                                 }else if(req.query.add){
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : req.query.add, userEdit : {} });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : req.query.add });
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : req.query.add, userEdit : {} });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : req.query.add });
                                 }else if(req.query.passEdit){
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : req.query.passEdit, validation, userEdit : {} });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : req.query.passEdit, validation });
                                         validation.changeConfirmPassError = false;
                                         validation.changeOldPassError = false;
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : "", passEdit : req.query.passEdit, validation, userEdit : {} });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : "", passEdit : req.query.passEdit, validation });
                                         validation.changeConfirmPassError = false;
                                         validation.changeOldPassError = false;
                                 }else if(req.query.userEdit){
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : user });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : true });
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : user });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : req.query.add, passEdit : '', userEdit : true });
                                 }else{
                                     if (cart) {
-                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : {} });
+                                        res.render('user/myAccount', { cart, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : false });
                                     } else
-                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : {} });
+                                        res.render('user/myAccount', { cart: { items: [] }, wishlist, categories, user, index : '', add : '', passEdit : '', userEdit : false });
                                 }
                                 
                             })
