@@ -1378,7 +1378,7 @@ exports.addToCart = (req, res) => {
                                         if (req.query.productView)
                                             res.redirect(`/user-home/product?id=${req.query.id}`)
                                         else if (req.query.wishlist) {
-                                            Wishlist.deleteOne({ owner : req.session.userId, "items.itemId" : req.query.id })
+                                            Wishlist.updateOne({ owner : req.session.userId }, { $pull : { items : { itemId : req.query.id } } })
                                                 .then(() => {
                                                     res.redirect('/wishlist')
                                                 })

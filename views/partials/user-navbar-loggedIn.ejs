@@ -43,7 +43,9 @@
               <% if(wishlist.length === 0 ) { %>
                 <a class="nav-icon-link my-auto" href="/wishlist"><i class="fa-regular fa-heart"></i></a>
               <% }else{ %>
-                <a class="nav-icon-link my-auto position-relative" href="/wishlist"><i class="fa-regular fa-heart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= wishlist.length %>  </span></a>
+                <a class="nav-icon-link my-auto position-relative" href="/wishlist"><i class="fa-regular fa-heart"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= wishlist.length %> </span>
+                </a>
               <% } %> 
 
               <% if(cart.items.length === 0) { %>
