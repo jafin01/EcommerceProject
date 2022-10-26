@@ -1,7 +1,10 @@
-module.exports={
+const dotenv = require('dotenv');
+dotenv.config({ path: "config.env" })
 
-    ServiceID:"VA90973379c4c69c756a8773c4696003da",
-    accountSID:"AC713e26b4e956eec95e98f8f4c258acd0",
-    authTocken:"97365970df6a0b0e2aac407cd8de6094"
+module.exports={
+    
+    ServiceID : process.env.TWILIO_SERVICE_SID,
+    accountSID : process.env.TWILIO_ACCOUNT_SID,
+    authTocken : process.env.TWILIO_AUTH_TOCKEN
 
 }
