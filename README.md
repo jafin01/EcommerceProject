@@ -30,6 +30,7 @@ In order to access the admin panel on "/admin_login" you need to provide the adm
 
 ![This is an image](/Campertrek.png)
 ![This is an image](/ecommerce-1.png)
+![This is an image](/ecommerce.png)
 ## Run
 
 To run this application, you have to set your own environmental variables. For security reasons, some variables have been hidden from view and used as environmental variables with the help of dotenv package. Below are the variables that you need to set in order to run the application:
