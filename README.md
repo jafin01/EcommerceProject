@@ -29,26 +29,33 @@ Please <u><b>DO NOT</b></u> provide real card number and data.
 In order to access the admin panel on "/admin_login" you need to provide the admin email and password.
 
 ![This is an image](/Campertrek.png)
-![This is an image](/Campertrek.png)
+![This is an image](/ecommerce-1.png)
 ## Run
 
 To run this application, you have to set your own environmental variables. For security reasons, some variables have been hidden from view and used as environmental variables with the help of dotenv package. Below are the variables that you need to set in order to run the application:
 
-- razorpayKey_id :     This is the razorpay key_Id (string).
-
-- razorpayKey_secret :  This is the razorpay key_Secret (string).
-
-- serviceID: This is the Twilio Service Id (string).
-
-- accountSID: This is the Twilio accountSID (string).
-
-- authToken: This is the Twilio AuthToken (string).
-
 - PORT: Specify the port Number
+
+- MONGO_URI: Specify the Mongodb URI to access the database.
+
+- RAZORPAY_KEY_ID: This is the Razorpay key_Id (string).
+
+- RAZORPAY_KEY_SECRET:  This is the Razorpay key_Secret (string).
+
+- PAYPAL_CLIENT_ID: This is the Paypal client_id (string).
+
+- PAYPAL_SECRET: This is the paypal secret (string).
+
+- TWILIO_SERVICE_SID: This is the Twilio Service Id (string).
+
+- TWILIO_ACCOUNT_SID: This is the Twilio accountSID (string).
+
+- TWILIO_AUTH_TOCKEN: This is the Twilio AuthToken (string).
+
 
 After you've set these environmental variables in the .env file at the root of the project, and intsall node modules using  `npm install`
 
-Now you can run `npm start` in the terminal and the application should work.
+Now you can run `nodemon .\app.js` in the terminal and the application should work.
 
 ## Technology
 
@@ -56,7 +63,8 @@ The application is built with:
 
 - Node.js 
 - MongoDB
-- Express 
+- Express.js 
+- EJS view Engine
 - Bootstrap 
 - AJAX
 - JQuery
@@ -67,22 +75,23 @@ Deployed in AWS EC2 instance with Nginx reverse proxy
 
 ## Features
 
-The application displays different category of products such as footware,clothes and accessories.
+The application displays different category of products such as Backpacks, Tents and Jackets.
 
 Users can do the following:
 
 - Create an account, login or logout
-- Browse available products added by the admin
+- View available products added by the admin
+- Image zoom on hover
 - Add products to the shopping cart and wishlist
 - Delete products from the shopping cart and wishlist
 - Display the shopping cart
-- To checkout, a user must be logged in
+- To access cart, a user must be logged in
 - Checkout information is processed using razorpay and paypal the payment is send to the admin
--Also There is option for COD
+- Also There is option for COD
+- User can select checkout address or add a new address, or proceed with temporary address without saving
 - The profile contains all the orders a user has made
 - View Order details, and cancel the orders
-- Update their profile
-- Search and filter products
+- Update their profile ( email, password, saved address)
  
 
 
@@ -90,17 +99,16 @@ Admins can do the following:
 
 - Login or logout to the admin panel
 - Display month wise sales report in bar chart
-- Display product wise sales report in pie chart 
+- Display quarterly sales report in pie chart 
 - Download sals report in pdf and excel 
 - Add products
-- Admin Can crop images all the image before upload
-- Veiw sale reports
+- View sale reports
 - View, edit or delete their products
 - Change the orders status
-- Manage users
+- Manage users (block or unblock)
 - View all orders done by users
 - Manage users home page 
 
 
 
- Copyright 2022 © [Aswanth Krishna](https://github.com/aswanthkris)
+ Copyright 2022 © [Jafin Jahfar](https://github.com/jafi01)
